@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Post from './Post';
+import { createEndpoint } from "../../helpers";
 
 class PostsList extends Component {
 	constructor(props) {
@@ -9,53 +10,49 @@ class PostsList extends Component {
 		this.state = {
 			posts: [],
 			isLoading: false,
-			pages: 1
+			pages: 0,
+			totalPosts: 0
 		};
 	}
 
 	componentWillMount() {
-		this.getPosts();
+		this.getPosts(createEndpoint(
+				this.props.baseUrl,
+				this.props.filters
+		));
 	}
 
 	componentDidUpdate(prevProps) {
 		if (this.props !== prevProps) {
-			this.getPosts();
+			this.getPosts(createEndpoint(
+					this.props.baseUrl,
+					this.props.filters
+			));
 		}
 	}
 
-	getPosts(url = this.finalEndpoint()) {
+	getPosts(url) {
+		let pages, totalPosts;
+
 		this.setState({
 			isLoading: true
 		});
 
 		fetch(url)
-				.then((response) => response.json())
+				.then((response) => {
+					pages = parseInt(response.headers.get('X-WP-TotalPages'));
+					totalPosts = parseInt(response.headers.get('X-WP-Total'));
+
+					return response.json();
+				})
 				.then((data) => {
 					this.setState({
 						posts: data,
-						isLoading: false
+						isLoading: false,
+						pages: pages,
+						totalPosts: totalPosts
 					})
 				});
-	}
-
-	finalEndpoint(base = this.props.apiUrl, filters = this.props.selectedFilters) {
-		let filtersUrl = '',
-				filterCounter = 1,
-				filtersCount = Object.keys(filters).length;
-
-		if (filtersCount === 0) return base;
-
-		for (let filter in filters) {
-			filtersUrl+= `filter[${filter}]=${filters[filter].items.join((filters[filter].relation === 'AND' ? '%2B' : ','))}`;
-
-			if (filterCounter < filtersCount) {
-				filtersUrl+= '&';
-			}
-
-			filterCounter++;
-		}
-
-		return `${base}?${filtersUrl}`;
 	}
 
 	createPosts(data) {
@@ -65,8 +62,6 @@ class PostsList extends Component {
 	}
 
 	render() {
-		console.log(this.finalEndpoint());
-
 		return (
 				<div className="service-items">
 					<div className={this.state.isLoading ? 'service-loader service-loader--loading' : 'service-loader'} />
@@ -79,8 +74,8 @@ class PostsList extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		selectedFilters: state.selectedFilters,
-		apiUrl: state.apiUrl,
+		filters: state.filters,
+		baseUrl: state.baseUrl,
 		posts: state.posts
 	}
 };

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
-import { changeSelectedFilters } from "../../store/actions";
+import { updateFilters } from "../../store/actions";
+import {
+	createFiltersObject,
+	getPosts,
+	createEndpoint
+} from "../../helpers";
 
 class FilterRow extends Component {
 	constructor(props) {
@@ -13,30 +18,7 @@ class FilterRow extends Component {
 	}
 
 	handleChange() {
-		let filters = {...this.props.selectedFilters},
-				parent = this.props.data.parent,
-				item = this.props.data.slug,
-				relation = this.props.data.relation;
-
-		if (!this.state.isChecked) {
-			if (!(parent in filters)) {
-				filters[parent] = {};
-				filters[parent].items = [item];
-				filters[parent].relation = relation;
-			} else {
-				if (filters[parent].items.indexOf(item) === -1) {
-					filters[parent].items.push(item);
-				}
-			}
-		} else {
-			if (filters[parent].items.length > 1) {
-				filters[parent].items.splice(filters[parent].items.indexOf(item), 1);
-			} else {
-				delete filters[parent];
-			}
-		}
-
-		this.props.changeSelectedFilters(filters);
+		this.props.updateFilters(createFiltersObject(this.props, this.state));
 
 		this.setState({
 			isChecked: !this.state.isChecked
@@ -61,13 +43,15 @@ class FilterRow extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		selectedFilters: state.selectedFilters
+		filters: state.filters,
+		baseUrl: state.baseUrl
 	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeSelectedFilters: bindActionCreators(changeSelectedFilters, dispatch)
+		updateFilters: bindActionCreators(updateFilters, dispatch),
+		getPosts: bindActionCreators(getPosts, dispatch)
 	}
 };
 
