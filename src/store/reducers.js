@@ -1,4 +1,8 @@
-import { UPDATE_FILTERS, UPDATE_POSTS } from "./actions";
+import {
+	UPDATE_FILTERS,
+	UPDATE_POSTS,
+	LOAD_INITIAL_POSTS
+} from "./actions";
 
 /**
  * TODO:
@@ -20,6 +24,9 @@ export const rootReducer = (state = initialState, action) => {
 
 		case UPDATE_POSTS:
 			return { ...state, posts: action.payload};
+
+		case LOAD_INITIAL_POSTS:
+			return { ...state };
 
 		default:
 			return state;

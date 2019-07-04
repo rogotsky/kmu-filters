@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import { updateFilters } from "../../store/actions";
-import {
-	createFiltersObject,
-	getPosts,
-	createEndpoint
-} from "../../helpers";
+import { createFiltersObject } from "../../helpers";
 
 class FilterRow extends Component {
 	constructor(props) {
@@ -43,15 +39,13 @@ class FilterRow extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		filters: state.filters,
-		baseUrl: state.baseUrl
+		filters: state.filters
 	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateFilters: bindActionCreators(updateFilters, dispatch),
-		getPosts: bindActionCreators(getPosts, dispatch)
+		updateFilters: bindActionCreators(updateFilters, dispatch)
 	}
 };
 

@@ -2,7 +2,7 @@
  *
  * @param props: filter checkbox props
  * @param state: filter checkbox state
- * @returns object: selected filters
+ * @returns {object}: selected filters
  */
 export const createFiltersObject = (props, state) => {
 	let filters = {...props.filters},
@@ -38,7 +38,7 @@ export const createFiltersObject = (props, state) => {
  * @returns {string}
  */
 export const createEndpoint = (base, filters) => {
-	const newFunction = (filters) => (
+	const query = (filters) => (
 			Object.keys(filters).reduce((acc, el, i) => {
 				acc += `filter[${el}]=${filters[el].items.join(filters[el].relation === 'AND' ? '%2B' : ',')}
 									${i < (Object.keys(filters).length - 1) ? '&' : ''}`;
@@ -46,32 +46,25 @@ export const createEndpoint = (base, filters) => {
 			}, '')
 	);
 
-	return `${base}?${newFunction(filters)}`;
+	return `${base}?${query(filters)}`;
 };
 
 /**
  * @param url(string)
+ * @returns {object}
  */
-export const getPosts = (url) => {
+export const getPosts = async (url) => {
 	let posts = {};
 
-	return dispatch => {
-		fetch(url)
-				.then((response) => {
-					posts.totalPages = parseInt(response.headers.get('X-WP-TotalPages'));
-					posts.totalPosts = parseInt(response.headers.get('X-WP-Total'));
+	try {
+		const response = await fetch(url);
 
-					return response.json();
-				})
-				.then((data) => {
-					posts.items = data;
+		posts.totalPages = await parseInt(response.headers.get('X-WP-TotalPages'));
+		posts.totalPosts = await parseInt(response.headers.get('X-WP-Total'));
+		posts.items = await response.json();
 
-					console.log(posts);
-
-					dispatch({
-						type: 'UPDATE_POSTS',
-						payload: posts
-					});
-				});
-	};
+		return posts;
+	} catch (e) {
+		console.log(e);
+	}
 };
