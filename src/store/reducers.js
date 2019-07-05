@@ -2,7 +2,7 @@ import {
 	UPDATE_FILTERS,
 	UPDATE_POSTS,
 	LOAD_INITIAL_POSTS
-} from "./actions";
+} from "./actionTypes";
 
 /**
  * TODO:
@@ -23,7 +23,7 @@ export const rootReducer = (state = initialState, action) => {
 			return { ...state, filters: action.payload };
 
 		case UPDATE_POSTS:
-			return { ...state, posts: action.payload};
+			return { ...state, posts: action.payload };
 
 		case LOAD_INITIAL_POSTS:
 			return { ...state };

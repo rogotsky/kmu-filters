@@ -54,16 +54,17 @@ export const createEndpoint = (base, filters) => {
  * @returns {object}
  */
 export const getPosts = async (url) => {
-	let posts = {};
-
 	try {
 		const response = await fetch(url);
+		const totalPages = await parseInt(response.headers.get('X-WP-TotalPages'));
+		const totalPosts = await parseInt(response.headers.get('X-WP-Total'));
+		const items = await response.json();
 
-		posts.totalPages = await parseInt(response.headers.get('X-WP-TotalPages'));
-		posts.totalPosts = await parseInt(response.headers.get('X-WP-Total'));
-		posts.items = await response.json();
-
-		return posts;
+		return {
+			totalPages,
+			totalPosts,
+			items,
+		};
 	} catch (e) {
 		console.log(e);
 	}

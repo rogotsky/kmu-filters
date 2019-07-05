@@ -3,7 +3,7 @@ import FilterRow from './FilterRow';
 import shortid from 'shortid';
 
 const Filter = (props) => {
-	const {data} = props;
+	const { data } = props;
 
 	return (
 			<div className="service-filter">

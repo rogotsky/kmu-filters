@@ -24,7 +24,7 @@ class PostsList extends Component {
 	}
 
 	render() {
-		console.log(this.props.posts.items);
+		console.log(this.props.posts);
 
 		return (
 				<div className="service-items">

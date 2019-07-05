@@ -30,7 +30,7 @@ class FilterRow extends Component {
 								onChange={this.handleChange}
 						/>
 						<span className="filter-checkbox"/>
-						<span className="filter-name">{ this.props.data.name}</span>
+						<span className="filter-name">{this.props.data.name}</span>
 					</label>
 				</li>
 		)

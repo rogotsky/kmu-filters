@@ -1,8 +1,6 @@
 import React from 'react';
 
-const Post = (props) => {
-	const {data} = props;
-
+const Post = ({ data }) => {
 	const formattedDate = (wpDate, divider) => {
 		let dd = String(new Date(wpDate).getDate()),
 				mm = String(new Date(wpDate).getMonth() + 1),

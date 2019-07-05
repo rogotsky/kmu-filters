@@ -6,7 +6,11 @@ import {
 	select,
 	all
 } from 'redux-saga/effects';
-import { UPDATE_FILTERS, LOAD_INITIAL_POSTS, updatePosts } from "./actions";
+import {
+	UPDATE_FILTERS,
+	LOAD_INITIAL_POSTS
+} from "./actionTypes";
+import { updatePosts } from "./actions";
 import { createEndpoint, getPosts } from "../helpers";
 
 function* getInitialData() {
