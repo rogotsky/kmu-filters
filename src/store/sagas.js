@@ -8,16 +8,29 @@ import {
 } from 'redux-saga/effects';
 import {
 	UPDATE_FILTERS,
-	LOAD_INITIAL_POSTS
+	SET_INITIAL_POSTS,
+	CHANGE_PAGE
 } from "./actionTypes";
-import { updatePosts } from "./actions";
-import { createEndpoint, getPosts } from "../helpers";
+import {
+	updatePosts,
+	updateLoading,
+	setInitialPostData,
+	setPostData
+} from "./actions";
+import {
+	createEndpoint,
+	getPosts
+} from "../helpers";
 
 function* getInitialData() {
 	try {
 		const baseUrl = yield select(selectors.baseUrl);
+		yield put(updateLoading(true));
 		const data = yield call(getPosts, baseUrl);
-		yield put(updatePosts(data));
+		data.currentQuery = baseUrl;
+		yield put(updatePosts(data.items));
+		yield put(setInitialPostData(data));
+		yield put(updateLoading(false));
 	} catch (e) {
 		console.log(e);
 	}
@@ -27,17 +40,36 @@ function* getFilteredData() {
 	try {
 		const baseUrl = yield select(selectors.baseUrl);
 		const filters = yield select(selectors.filters);
-		const data = yield call(getPosts, createEndpoint(baseUrl, filters));
-		yield put(updatePosts(data));
+		const endpoint = createEndpoint(baseUrl, filters);
+		yield put(updateLoading(true));
+		const data = yield call(getPosts, endpoint);
+		data.currentQuery = endpoint;
+		yield put(updatePosts(data.items));
+		yield put(setPostData(data));
+		yield put(updateLoading(false));
 	} catch (e) {
+		console.log(e);
+	}
+}
+
+function* changePage() {
+	try {
+		const currentPage = yield select(selectors.currentPage);
+		const currentQuery = yield select(selectors.currentQuery);
+		yield put(updateLoading(true));
+		const data = yield call(getPosts, `${currentQuery}page=${currentPage}`);
+		yield put(updatePosts(data.items));
+		yield put(updateLoading(false));
+	} catch(e) {
 		console.log(e);
 	}
 }
 
 function* rootSaga() {
 	yield all([
-		takeLatest(LOAD_INITIAL_POSTS, getInitialData),
-		takeLatest(UPDATE_FILTERS, getFilteredData)
+		takeLatest(SET_INITIAL_POSTS, getInitialData),
+		takeLatest(UPDATE_FILTERS, getFilteredData),
+		takeLatest(CHANGE_PAGE, changePage)
 	]);
 }
 

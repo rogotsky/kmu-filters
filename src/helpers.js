@@ -39,23 +39,23 @@ export const createFiltersObject = (props, state) => {
  */
 export const createEndpoint = (base, filters) => {
 	const query = (filters) => (
-			Object.keys(filters).reduce((acc, el, i) => {
-				acc += `filter[${el}]=${filters[el].items.join(filters[el].relation === 'AND' ? '%2B' : ',')}
-									${i < (Object.keys(filters).length - 1) ? '&' : ''}`;
+			Object.keys(filters).reduce((acc, i,) => {
+				acc += `filter[${i}]=${filters[i].items.join(filters[i].relation === 'AND' ? '%2B' : ',')}&`;
 				return acc;
 			}, '')
 	);
 
-	return `${base}?${query(filters)}`;
+	return `${base}${query(filters)}`;
 };
 
 /**
  * @param url(string)
+ * @param page(number)
  * @returns {object}
  */
-export const getPosts = async (url) => {
+export const getPosts = async (url, page) => {
 	try {
-		const response = await fetch(url);
+		const response = await fetch(`${url}${page ? 'page=' + page : ''}`);
 		const totalPages = await parseInt(response.headers.get('X-WP-TotalPages'));
 		const totalPosts = await parseInt(response.headers.get('X-WP-Total'));
 		const items = await response.json();

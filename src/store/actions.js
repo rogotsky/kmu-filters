@@ -1,7 +1,7 @@
-export const updateFilters = (filtersObject) => {
+export const updateFilters = (data) => {
 	return {
 		type: 'UPDATE_FILTERS',
-		payload: filtersObject
+		payload: data
 	}
 };
 
@@ -12,8 +12,36 @@ export const updatePosts = (data) => {
 	}
 };
 
-export const loadInitialPosts = () => {
+export const setInitialPosts = () => {
 	return {
-		type: 'LOAD_INITIAL_POSTS'
+		type: 'SET_INITIAL_POSTS'
+	}
+};
+
+export const setInitialPostData = (data) => {
+	return {
+		type: 'SET_INITIAL_POST_DATA',
+		payload: data
+	}
+};
+
+export const setPostData = (data) => {
+	return {
+		type: 'SET_POST_DATA',
+		payload: data
+	}
+};
+
+export const updateLoading = (data) => {
+	return {
+		type: 'UPDATE_LOADING',
+		payload: data
+	}
+};
+
+export const changePage = (data) => {
+	return {
+		type: 'CHANGE_PAGE',
+		payload: data
 	}
 };

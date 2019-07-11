@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Post from './Post';
-import { loadInitialPosts } from '../../store/actions';
+import { setInitialPosts, changePage } from '../../store/actions';
 import { bindActionCreators } from 'redux';
+import Pagination from 'react-pagination-library';
 
 class PostsList extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			isLoading: false
-		};
+		this.changeCurrentPage = this.changeCurrentPage.bind(this);
 	}
 
 	componentDidMount() {
-		this.props.loadInitialPosts();
+		this.props.setInitialPosts();
 	}
 
 	createPosts(data) {
@@ -23,14 +22,33 @@ class PostsList extends Component {
 		});
 	}
 
+	changeCurrentPage(numPage) {
+		console.log(numPage);
+		//fetch a data
+		//or update a query to get data
+	}
+
 	render() {
-		console.log(this.props.posts);
+		const {
+			posts,
+			loading,
+			currentPage,
+			totalPages,
+			changePage
+		} = this.props;
 
 		return (
 				<div className="service-items">
-					{/*<div className={this.state.isLoading ? 'service-loader service-loader--loading' : 'service-loader'} />*/}
-					{/*{!this.state.posts.length && !this.state.isLoading && <div>Nichts gefunden</div>}*/}
-					{!!this.props.posts.items.length && this.createPosts(this.props.posts.items)}
+					<div className={!!loading ? 'service-loader service-loader--loading' : 'service-loader'} />
+					{!posts.length && <div>Nichts gefunden</div>}
+					{!!posts.length && this.createPosts(posts)}
+					{totalPages > 1 &&
+					<Pagination
+							currentPage={currentPage}
+							totalPages={totalPages}
+							changeCurrentPage={changePage}
+							theme='square'
+					/>}
 				</div>
 		)
 	}
@@ -38,15 +56,17 @@ class PostsList extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		filters: state.filters,
-		baseUrl: state.baseUrl,
-		posts: state.posts
+		loading: state.loading,
+		posts: state.posts,
+		currentPage: state.currentPage,
+		totalPages: state.totalPages
 	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		loadInitialPosts: bindActionCreators(loadInitialPosts, dispatch)
+		setInitialPosts: bindActionCreators(setInitialPosts, dispatch),
+		changePage: bindActionCreators(changePage, dispatch)
 	}
 };
 

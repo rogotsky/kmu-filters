@@ -25,10 +25,7 @@ class FilterRow extends Component {
 		return (
 				<li className="service-filter__item">
 					<label>
-						<input
-								type="checkbox"
-								onChange={this.handleChange}
-						/>
+						<input type="checkbox" onChange={this.handleChange} />
 						<span className="filter-checkbox"/>
 						<span className="filter-name">{this.props.data.name}</span>
 					</label>
