@@ -3,9 +3,9 @@ import {
 	UPDATE_POSTS,
 	SET_INITIAL_POSTS,
 	UPDATE_LOADING,
-	SET_INITIAL_POST_DATA,
 	SET_POST_DATA,
-	CHANGE_PAGE
+	CHANGE_PAGE,
+	SEARCH_POSTS
 } from "./actionTypes";
 
 /**
@@ -17,9 +17,10 @@ const initialState = {
 	filters: {},
 	baseUrl: 'http://localhost/wp-json/wp/v2/document?',
 	loading: false,
-	totalInitialPosts: 0,
+	totalPosts: '',
 	totalPages: 0,
 	currentQuery: '',
+	searchValue: '',
 	currentPage: 1,
 	posts: {}
 };
@@ -35,18 +36,10 @@ export const rootReducer = (state = initialState, action) => {
 		case SET_INITIAL_POSTS:
 			return { ...state };
 
-		case SET_INITIAL_POST_DATA:
-			return {
-				...state,
-				totalInitialPosts: action.payload.totalPosts,
-				totalPages: action.payload.totalPages,
-				currentQuery: action.payload.currentQuery,
-				currentPage: 1
-			};
-
 		case SET_POST_DATA:
 			return {
 				...state,
+				totalPosts: action.payload.totalPosts,
 				totalPages: action.payload.totalPages,
 				currentQuery: action.payload.currentQuery,
 				currentPage: 1
@@ -57,6 +50,13 @@ export const rootReducer = (state = initialState, action) => {
 
 		case CHANGE_PAGE:
 			return { ...state, currentPage: action.payload };
+
+		case SEARCH_POSTS:
+			return {
+				...state,
+				searchValue: action.payload,
+				filters: {}
+			};
 
 		default:
 			return state;

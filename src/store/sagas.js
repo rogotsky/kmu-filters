@@ -9,12 +9,12 @@ import {
 import {
 	UPDATE_FILTERS,
 	SET_INITIAL_POSTS,
-	CHANGE_PAGE
+	CHANGE_PAGE,
+	SEARCH_POSTS
 } from "./actionTypes";
 import {
 	updatePosts,
 	updateLoading,
-	setInitialPostData,
 	setPostData
 } from "./actions";
 import {
@@ -29,7 +29,7 @@ function* getInitialData() {
 		const data = yield call(getPosts, baseUrl);
 		data.currentQuery = baseUrl;
 		yield put(updatePosts(data.items));
-		yield put(setInitialPostData(data));
+		yield put(setPostData(data));
 		yield put(updateLoading(false));
 	} catch (e) {
 		console.log(e);
@@ -65,11 +65,28 @@ function* changePage() {
 	}
 }
 
+function* search() {
+	try {
+		const baseUrl = yield select(selectors.baseUrl);
+		const searchValue = yield select(selectors.searchValue);
+		const endpoint = baseUrl + 'search=' + searchValue + '&';
+		yield put(updateLoading(true));
+		const data = yield call(getPosts, endpoint);
+		data.currentQuery = endpoint;
+		yield put(updatePosts(data.items));
+		yield put(setPostData(data));
+		yield put(updateLoading(false));
+	} catch(e) {
+		console.log(e);
+	}
+}
+
 function* rootSaga() {
 	yield all([
 		takeLatest(SET_INITIAL_POSTS, getInitialData),
 		takeLatest(UPDATE_FILTERS, getFilteredData),
-		takeLatest(CHANGE_PAGE, changePage)
+		takeLatest(CHANGE_PAGE, changePage),
+		takeLatest(SEARCH_POSTS, search)
 	]);
 }
 

@@ -1,28 +1,26 @@
 /**
  *
  * @param props: filter checkbox props
- * @param state: filter checkbox state
+ * @param check(bool): filter checked state
  * @returns {object}: selected filters
  */
-export const createFiltersObject = (props, state) => {
-	let filters = {...props.filters},
-			parent = props.data.parent,
-			item = props.data.slug,
-			relation = props.data.relation;
+export const createFiltersObject = (props, check) => {
+	const filters = {...props.filters},
+			{ parent, slug, relation } = props.data;
 
-	if (!state.isChecked) {
-		if (!(parent in filters)) {
+	if (!check) {
+		if (!(filters.hasOwnProperty(parent))) {
 			filters[parent] = {};
-			filters[parent].items = [item];
+			filters[parent].items = [slug];
 			filters[parent].relation = relation;
 		} else {
-			if (filters[parent].items.indexOf(item) === -1) {
-				filters[parent].items.push(item);
+			if (filters[parent].items.indexOf(slug) === -1) {
+				filters[parent].items.push(slug);
 			}
 		}
 	} else {
 		if (filters[parent].items.length > 1) {
-			filters[parent].items.splice(filters[parent].items.indexOf(item), 1);
+			filters[parent].items.splice(filters[parent].items.indexOf(slug), 1);
 		} else {
 			delete filters[parent];
 		}

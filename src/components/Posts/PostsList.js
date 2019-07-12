@@ -8,8 +8,6 @@ import Pagination from 'react-pagination-library';
 class PostsList extends Component {
 	constructor(props) {
 		super(props);
-
-		this.changeCurrentPage = this.changeCurrentPage.bind(this);
 	}
 
 	componentDidMount() {
@@ -20,12 +18,6 @@ class PostsList extends Component {
 		return data.map(postData => {
 			return <Post data={postData} key={postData.id} />;
 		});
-	}
-
-	changeCurrentPage(numPage) {
-		console.log(numPage);
-		//fetch a data
-		//or update a query to get data
 	}
 
 	render() {
@@ -40,7 +32,7 @@ class PostsList extends Component {
 		return (
 				<div className="service-items">
 					<div className={!!loading ? 'service-loader service-loader--loading' : 'service-loader'} />
-					{!posts.length && <div>Nichts gefunden</div>}
+					{(!posts.length && !loading) && <div>Nichts gefunden</div>}
 					{!!posts.length && this.createPosts(posts)}
 					{totalPages > 1 &&
 					<Pagination

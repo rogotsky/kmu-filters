@@ -18,13 +18,6 @@ export const setInitialPosts = () => {
 	}
 };
 
-export const setInitialPostData = (data) => {
-	return {
-		type: 'SET_INITIAL_POST_DATA',
-		payload: data
-	}
-};
-
 export const setPostData = (data) => {
 	return {
 		type: 'SET_POST_DATA',
@@ -42,6 +35,13 @@ export const updateLoading = (data) => {
 export const changePage = (data) => {
 	return {
 		type: 'CHANGE_PAGE',
+		payload: data
+	}
+};
+
+export const searchPosts = (data) => {
+	return {
+		type: 'SEARCH_POSTS',
 		payload: data
 	}
 };
