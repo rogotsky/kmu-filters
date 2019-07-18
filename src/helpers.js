@@ -5,7 +5,7 @@
  * @returns {object}: selected filters
  */
 export const createFiltersObject = (props, check) => {
-	const filters = {...props.filters},
+	const filters = { ...props.filters },
 			{ parent, slug, relation } = props.data;
 
 	if (!check) {
@@ -61,7 +61,7 @@ export const getPosts = async (url, page) => {
 		return {
 			totalPages,
 			totalPosts,
-			items,
+			items
 		};
 	} catch (e) {
 		console.log(e);

@@ -19,7 +19,7 @@ const Post = ({ data }) => {
 					{!!data.document_tags.length && <p>Tags: {data.document_tags.join(', ')}</p>}
 				</div>
 				<div className="service-item__meta">
-					<p>Letzes Update:<br/><span>{formattedDate(data.modified, '.')}</span></p>
+					<p>Letzes Update: <br/><span>{formattedDate(data.modified, '.')}</span></p>
 					<a target="_blank" href={data.acf.document_file ? data.acf.document_file : '#'} className="service-item__download">Download</a>
 				</div>
 			</div>
