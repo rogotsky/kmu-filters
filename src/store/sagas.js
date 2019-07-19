@@ -68,7 +68,6 @@ function* search() {
     const endpoint = BASE_URL + 'search=' + searchValue + '&';
     yield put(updateLoading(true));
     const data = yield call(getPosts, endpoint);
-    data.currentQuery = endpoint;
     yield put(updatePosts(data.items));
     yield put(setPostData(data));
     yield put(updateLoading(false));
