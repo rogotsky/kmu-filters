@@ -12,10 +12,11 @@ const Post = ({ data }) => {
     return dateString;
   };
 
-  const tagsExist = !!data.document_tags.length,
+  const tagsExist = !!data.document_tags,
     tagsString = data.document_tags.join(', '),
     postLink = data.acf.document_file ? data.acf.document_file : '#',
-    date = formattedDate(data.modified, '.');
+    date = formattedDate(data.modified, '.'),
+    subtitle = !!data.acf.document_subtitle;
 
   return (
     <div className="service-item">
@@ -23,7 +24,8 @@ const Post = ({ data }) => {
         <img src="/wp-content/themes/ratgeber/images/doc-thumbnail.png"/>
       </div>
       <div className="service-item__textbox">
-        <p>{data.title.rendered}</p>
+        <p>{data.title.rendered} <br/>by {data.coauthors[0].display_name}</p>
+        {subtitle && <p>- {data.acf.document_subtitle}</p>}
         {tagsExist && <p>Tags: {tagsString}</p>}
       </div>
       <div className="service-item__meta">
