@@ -5,13 +5,13 @@ import { Provider } from 'react-redux';
 import App from './App';
 
 const init = () => {
-	const mountNode = document.getElementById('react-app');
-	render(
-			<Provider store={store}>
-				<App />
-			</Provider>,
-			mountNode
-	);
+  const mountNode = document.getElementById('react-app');
+  render(
+    <Provider store={store}>
+      <App/>
+    </Provider>,
+    mountNode
+  );
 };
 
 init();

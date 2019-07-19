@@ -4,15 +4,15 @@ import FiltersList from './components/Filters/FiltersList';
 import PostsList from './components/Posts/PostsList';
 
 const App = () => {
-	return (
-			<div>
-				<Search/>
-				<div className="service-content">
-					<FiltersList/>
-					<PostsList/>
-				</div>
-			</div>
-	)
+  return (
+    <div>
+      <Search/>
+      <div className="service-content">
+        <FiltersList/>
+        <PostsList/>
+      </div>
+    </div>
+  )
 };
 
 export default App;

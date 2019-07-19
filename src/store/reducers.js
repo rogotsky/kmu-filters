@@ -15,14 +15,13 @@ import {
  */
 const initialState = {
 	filters: {},
-	baseUrl: 'http://localhost/wp-json/wp/v2/document?',
 	loading: false,
-	totalPosts: '',
+	totalPosts: 0,
 	totalPages: 0,
 	currentQuery: '',
 	searchValue: '',
 	currentPage: 1,
-	posts: {}
+	posts: []
 };
 
 export const rootReducer = (state = initialState, action) => {

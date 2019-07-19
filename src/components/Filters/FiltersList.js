@@ -1,47 +1,49 @@
 import React, { Component } from 'react';
 import Filter from './Filter';
 import FiltersData from './FiltersData';
-import shortid from 'shortid';
 
 class FiltersList extends Component {
-	constructor(props) {
-		super(props);
-		this.toggleFilters = this.toggleFilters.bind(this);
+  constructor(props) {
+    super(props);
+    this.toggleFilters = this.toggleFilters.bind(this);
 
-		this.state = {
-			filtersOpened: false
-		}
-	}
+    this.state = {
+      filtersOpened: false
+    }
+  }
 
-	createFilters(data) {
-		return data.map(filterData => {
-			return <Filter data={filterData} key={shortid.generate()}/>
-		});
-	}
+  createFilters(data) {
+    return data.map(filterData => {
+      return <Filter data={filterData} key={filterData.name}/>
+    });
+  }
 
-	toggleFilters() {
-		this.setState({
-			filtersOpened: !this.state.filtersOpened
-		});
-	}
+  toggleFilters() {
+    this.setState({
+      filtersOpened: !this.state.filtersOpened
+    });
+  }
 
-	render() {
-		return (
-				<div className="service-filters">
-					<button
-							className={`service-filters__toggle${this.state.filtersOpened ? ' service-filters__toggle--opened' : ''}`}
-							onClick={this.toggleFilters}
-					>
-						Filter
-					</button>
-					<div
-							className={`service-filters__inner${this.state.filtersOpened ? ' service-filters__inner--opened' : ''}`}
-					>
-						{this.createFilters(FiltersData)}
-					</div>
-				</div>
-		)
-	}
+  render() {
+    const buttonToggledClass = this.state.filtersOpened ? ' service-filters__toggle--opened' : '',
+      filtersToggledClass = this.state.filtersOpened ? ' service-filters__inner--opened' : '';
+
+    return (
+      <div className="service-filters">
+        <button
+          className={`service-filters__toggle${buttonToggledClass}`}
+          onClick={this.toggleFilters}
+        >
+          Filter
+        </button>
+        <div
+          className={`service-filters__inner${filtersToggledClass}`}
+        >
+          {this.createFilters(FiltersData)}
+        </div>
+      </div>
+    )
+  }
 }
 
 export default FiltersList;

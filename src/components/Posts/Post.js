@@ -1,29 +1,41 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Post = ({ data }) => {
-	const formattedDate = (wpDate, divider) => {
-		let dd = String(new Date(wpDate).getDate()),
-				mm = String(new Date(wpDate).getMonth() + 1),
-				yyyy = String(new Date(wpDate).getFullYear());
+  const formattedDate = (wpDate, divider) => {
+    const day = String(new Date(wpDate).getDate()),
+      month = String(new Date(wpDate).getMonth() + 1),
+      year = String(new Date(wpDate).getFullYear());
 
-		return (dd.length === 1 ? `0${dd}` : dd) + divider + (mm.length === 1 ? `0${mm}` : mm) + divider + yyyy;
-	};
+    const dateString = (day.length === 1 ? `0${day}` : day) + divider + (month.length === 1 ? `0${month}` : month) + divider + year;
 
-	return (
-			<div className="service-item">
-				<div className="service-item__thumbnail">
-					<img src="/wp-content/themes/ratgeber/images/doc-thumbnail.png"/>
-				</div>
-				<div className="service-item__textbox">
-					<p>{data.title.rendered}</p>
-					{!!data.document_tags.length && <p>Tags: {data.document_tags.join(', ')}</p>}
-				</div>
-				<div className="service-item__meta">
-					<p>Letzes Update: <br/><span>{formattedDate(data.modified, '.')}</span></p>
-					<a target="_blank" href={data.acf.document_file ? data.acf.document_file : '#'} className="service-item__download">Download</a>
-				</div>
-			</div>
-	)
+    return dateString;
+  };
+
+  const tagsExist = !!data.document_tags.length,
+    tagsString = data.document_tags.join(', '),
+    postLink = data.acf.document_file ? data.acf.document_file : '#',
+    date = formattedDate(data.modified, '.');
+
+  return (
+    <div className="service-item">
+      <div className="service-item__thumbnail">
+        <img src="/wp-content/themes/ratgeber/images/doc-thumbnail.png"/>
+      </div>
+      <div className="service-item__textbox">
+        <p>{data.title.rendered}</p>
+        {tagsExist && <p>Tags: {tagsString}</p>}
+      </div>
+      <div className="service-item__meta">
+        <p>Letzes Update: <br/><span>{date}</span></p>
+        <a target="_blank" href={postLink} className="service-item__download">Download</a>
+      </div>
+    </div>
+  )
+};
+
+Post.propTypes = {
+  data: PropTypes.object
 };
 
 export default Post;

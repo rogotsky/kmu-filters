@@ -1,4 +1,3 @@
-export const baseUrl = (state) => state.baseUrl;
 export const filters = (state) => state.filters;
 export const currentPage = (state) => state.currentPage;
 export const currentQuery = (state) => state.currentQuery;

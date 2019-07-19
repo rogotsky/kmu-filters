@@ -1,22 +1,26 @@
 import React from 'react';
 import FilterRow from './FilterRow';
-import shortid from 'shortid';
+import PropTypes from 'prop-types';
 
-const Filter = (props) => {
-	const { data } = props;
+const Filter = ({ data }) => {
+  const filterRows = data.items.map(filterRowData => {
+    filterRowData.parent = data.slug;
+    filterRowData.relation = data.relation;
+    return <FilterRow data={filterRowData} key={filterRowData.name}/>
+  });
 
-	return (
-			<div className="service-filter">
-				<p className="service-filter__title">{data.name}</p>
-				<ul className="service-filter__items">
-					{data.items.map(filterRowData => {
-						filterRowData.parent = data.slug;
-						filterRowData.relation = data.relation;
-						return <FilterRow data={filterRowData} key={shortid.generate()}/>
-					})}
-				</ul>
-			</div>
-	)
+  return (
+    <div className="service-filter">
+      <p className="service-filter__title">{data.name}</p>
+      <ul className="service-filter__items">
+        {filterRows}
+      </ul>
+    </div>
+  )
+};
+
+Filter.propTypes = {
+  data: PropTypes.object
 };
 
 export default Filter;
