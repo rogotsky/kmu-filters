@@ -16,12 +16,13 @@ const Post = ({ data }) => {
     tagsString = data.document_tags.join(', '),
     postLink = data.acf.document_file ? data.acf.document_file : '#',
     date = formattedDate(data.modified, '.'),
-    subtitle = !!data.acf.document_subtitle;
+    subtitle = !!data.acf.document_subtitle,
+    imageSrc = data.images !== null ? data.images.medium : '/wp-content/themes/ratgeber/images/doc-thumbnail.png';
 
   return (
     <div className="service-item">
       <div className="service-item__thumbnail">
-        <img src="/wp-content/themes/ratgeber/images/doc-thumbnail.png"/>
+        <img src={imageSrc}/>
       </div>
       <div className="service-item__textbox">
         <p>{data.title.rendered} <br/>by {data.coauthors[0].display_name}</p>

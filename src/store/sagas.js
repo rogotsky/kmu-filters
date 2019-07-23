@@ -21,7 +21,7 @@ import {
   createEndpoint,
   getPosts
 } from "../helpers";
-import { BASE_URL } from "./constants";
+import { BASE_URL } from "../constants";
 
 function* getInitialData() {
   try {
