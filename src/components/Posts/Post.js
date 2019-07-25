@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Rating from '../Rating';
 
 const Post = ({ data }) => {
   const formattedDate = (wpDate, divider) => {
@@ -28,6 +29,10 @@ const Post = ({ data }) => {
         <p>{data.title.rendered} <br/>by {data.coauthors[0].display_name}</p>
         {subtitle && <p>- {data.acf.document_subtitle}</p>}
         {tagsExist && <p>Tags: {tagsString}</p>}
+        <Rating
+            rating={parseInt(data.rating)}
+            postId={data.id}
+        />
       </div>
       <div className="service-item__meta">
         <p>Letzes Update: <br/><span>{date}</span></p>
