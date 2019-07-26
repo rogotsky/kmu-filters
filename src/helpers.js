@@ -68,3 +68,25 @@ export const getPosts = async (url, page) => {
     console.log(e);
   }
 };
+
+/**
+ * @param data {object}
+ * @returns FormData {object}
+ */
+export const prepareFormData = (data) => {
+  const formData = new FormData();
+
+  Object.keys(data).reduce((acc, i) => {
+    formData.append(i, data[i]);
+  }, '');
+
+  return formData;
+};
+
+/**
+ * @param key
+ * @returns {boolean}
+ */
+export const checkStorage = (key) => {
+  return !!localStorage.getItem(key);
+};

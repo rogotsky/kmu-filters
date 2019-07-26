@@ -5,6 +5,10 @@ import {
   SESSION_START,
   RATING_AJAX_URL
 } from "../constants";
+import {
+  prepareFormData,
+  checkStorage
+} from "../helpers";
 
 class Rating extends Component {
   constructor(props) {
@@ -14,38 +18,32 @@ class Rating extends Component {
 
     this.state = {
       rating: this.props.rating,
-      userVoted: false
+      userVoted: checkStorage(this.props.storageKey)
     };
   }
 
   changeRating(newRating) {
-    const duration = Math.floor(Date.now() / 1000) - SESSION_START;
-    const data = {
-      action: 'process_rating',
-      star_rating: newRating,
-      postID: this.props.postId,
-      duration: duration
-    };
+    if (!this.state.userVoted) {
+      const duration = Math.floor(Date.now() / 1000) - SESSION_START;
+      const data = {
+        action: 'process_rating',
+        star_rating: newRating,
+        postID: this.props.postId,
+        duration: duration
+      };
 
-    fetch(RATING_AJAX_URL, {
-      method: 'POST',
-      body: this.prepareRatingData(data)
-    });
+      fetch(RATING_AJAX_URL, {
+        method: 'POST',
+        body: prepareFormData(data)
+      });
 
-    this.setState({
-      rating: newRating,
-      userVoted: true
-    });
-  }
+      this.setState({
+        rating: newRating,
+        userVoted: true
+      });
 
-  prepareRatingData(data) {
-    const formData = new FormData();
-
-    Object.keys(data).reduce((acc, i) => {
-      formData.append(i, data[i]);
-    }, '');
-
-    return formData;
+      localStorage.setItem(`kmuDocVoted${this.props.postId}`, 'true');
+    }
   }
 
   render() {
@@ -53,7 +51,7 @@ class Rating extends Component {
       disabledClass = userVoted ? ' service-item__rating--disabled' : '';
 
     return (
-      <div className={`service-item__rating`}>
+      <div className={`service-item__rating${disabledClass}`}>
         <Ratings
           rating={rating}
           widgetRatedColors="#4f5b71"
@@ -76,7 +74,8 @@ class Rating extends Component {
 
 Rating.propTypes = {
   rating: PropTypes.number,
-  postId: PropTypes.number
+  postId: PropTypes.number,
+  storageKey: PropTypes.string
 };
 
 export default Rating;

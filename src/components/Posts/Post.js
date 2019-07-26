@@ -32,6 +32,7 @@ const Post = ({ data }) => {
         <Rating
             rating={parseInt(data.rating)}
             postId={data.id}
+            storageKey={`kmuDocVoted${data.id}`}
         />
       </div>
       <div className="service-item__meta">
