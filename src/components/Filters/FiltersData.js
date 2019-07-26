@@ -99,5 +99,32 @@ export default [
         slug: 'it-plan'
       }
     ]
+  },
+  {
+    name: 'Rating',
+    slug: 'd_rating',
+    relation: 'OR',
+    items: [
+      {
+        name: 1,
+        slug: 1
+      },
+      {
+        name: 2,
+        slug: 2
+      },
+      {
+        name: 3,
+        slug: 3
+      },
+      {
+        name: 4,
+        slug: 4
+      },
+      {
+        name: 5,
+        slug: 5
+      }
+    ]
   }
 ];

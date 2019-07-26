@@ -7,7 +7,8 @@ import {
 } from "../constants";
 import {
   prepareFormData,
-  checkStorage
+  checkStorage,
+  setStorage
 } from "../helpers";
 
 class Rating extends Component {
@@ -18,7 +19,7 @@ class Rating extends Component {
 
     this.state = {
       rating: this.props.rating,
-      userVoted: checkStorage(this.props.storageKey)
+      userVoted: checkStorage('kmuDocsVoted', this.props.postId)
     };
   }
 
@@ -42,7 +43,7 @@ class Rating extends Component {
         userVoted: true
       });
 
-      localStorage.setItem(`kmuDocVoted${this.props.postId}`, 'true');
+      setStorage('kmuDocsVoted', this.props.postId);
     }
   }
 
@@ -74,8 +75,7 @@ class Rating extends Component {
 
 Rating.propTypes = {
   rating: PropTypes.number,
-  postId: PropTypes.number,
-  storageKey: PropTypes.string
+  postId: PropTypes.number
 };
 
 export default Rating;

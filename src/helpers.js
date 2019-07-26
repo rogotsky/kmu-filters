@@ -38,7 +38,12 @@ export const createFiltersObject = (props, check) => {
 export const createEndpoint = (base, filters) => {
   const query = (filters) => (
     Object.keys(filters).reduce((acc, i,) => {
-      acc += `filter[${i}]=${filters[i].items.join(filters[i].relation === 'AND' ? '%2B' : ',')}&`;
+      if (i === 'd_rating') {
+        acc+= `filter[meta_key]=rmp_rounded_rating&filter[meta_value]=${filters[i].items.join(filters[i].relation === 'AND' ? '%2B' : ',')}&`;
+      } else {
+        acc += `filter[${i}]=${filters[i].items.join(filters[i].relation === 'AND' ? '%2B' : ',')}&`;
+      }
+
       return acc;
     }, '')
   );
@@ -84,9 +89,33 @@ export const prepareFormData = (data) => {
 };
 
 /**
- * @param key
+ * @param key {string}
+ * @param value {number}
  * @returns {boolean}
  */
-export const checkStorage = (key) => {
-  return !!localStorage.getItem(key);
+export const checkStorage = (key, value) => {
+  const storageItem = localStorage.getItem(key);
+
+  if (!storageItem) {
+    return false;
+  } else if (JSON.parse(storageItem).indexOf(value) === -1) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ * @param key {string}
+ * @param value {number}
+ */
+export const setStorage = (key, value) => {
+  const field = JSON.parse(localStorage.getItem(key));
+
+  if (localStorage.getItem(key)) {
+    field.push(value);
+    localStorage.setItem(key, JSON.stringify(field));
+  } else {
+    localStorage.setItem(key, JSON.stringify([value]));
+  }
 };
