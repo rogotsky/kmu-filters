@@ -15,7 +15,11 @@ export const createFiltersObject = (props, check) => {
       filters[parent].relation = relation;
     } else {
       if (filters[parent].items.indexOf(slug) === -1) {
-        filters[parent].items.push(slug);
+        if ( parent !== 'd_rating' ) {
+          filters[parent].items.push(slug);
+        } else {
+          filters[parent].items[0] = slug;
+        }
       }
     }
   } else {
@@ -39,7 +43,7 @@ export const createEndpoint = (base, filters) => {
   const query = (filters) => (
     Object.keys(filters).reduce((acc, i,) => {
       if (i === 'd_rating') {
-        acc+= `filter[meta_key]=rmp_rounded_rating&filter[meta_value]=${filters[i].items.join(filters[i].relation === 'AND' ? '%2B' : ',')}&`;
+        acc+= `filter[meta_key]=rmp_rounded_rating&filter[meta_value]=${filters[i].items[0]}&`;
       } else {
         acc += `filter[${i}]=${filters[i].items.join(filters[i].relation === 'AND' ? '%2B' : ',')}&`;
       }

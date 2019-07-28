@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 import { updateFilters } from "../../store/actions";
 import { createFiltersObject } from "../../helpers";
 import PropTypes from 'prop-types';
+import Stars from './Stars';
 
 class FilterRow extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.isChecked = this.isChecked.bind(this);
   }
 
@@ -22,17 +24,38 @@ class FilterRow extends Component {
     this.props.updateFilters(createFiltersObject(this.props, this.isChecked()));
   }
 
+  handleClick(e) {
+    if (this.isChecked()) {
+      e.target.checked = false;
+      this.handleChange();
+    }
+  }
+
   render() {
+    const parent = this.props.data.parent,
+          isRating = parent === 'd_rating';
+
     return (
       <li className="service-filter__item">
         <label>
-          <input
-            type="checkbox"
-            checked={this.isChecked()}
-            onChange={this.handleChange}
-          />
+          { isRating ?
+            <input
+              type="radio"
+              name={parent}
+              checked={this.isChecked()}
+              onChange={this.handleChange}
+              onClick={this.handleClick}
+            /> :
+            <input
+              type="checkbox"
+              checked={this.isChecked()}
+              onChange={this.handleChange}
+            />
+          }
           <span className="filter-checkbox"/>
-          <span className="filter-name">{this.props.data.name}</span>
+          <span className="filter-name">
+            { isRating ? <Stars count={this.props.data.slug} /> : this.props.data.name }
+          </span>
         </label>
       </li>
     )
@@ -47,7 +70,8 @@ const mapDispatchToProps = {
 
 FilterRow.propTypes = {
   filters: PropTypes.object,
-  updateFilters: PropTypes.func
+  updateFilters: PropTypes.func,
+  data: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterRow);

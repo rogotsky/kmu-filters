@@ -103,7 +103,6 @@ export default [
   {
     name: 'Rating',
     slug: 'd_rating',
-    relation: 'OR',
     items: [
       {
         name: 1,
