@@ -16,7 +16,7 @@ const Post = ({ data }) => {
   const tagsExist = !!data.document_tags,
     tagsString = data.document_tags.join(', '),
     postLink = data.acf.document_file ? data.acf.document_file : '#',
-    date = formattedDate(data.modified, '.'),
+    date = formattedDate(data.modified_gmt, '.'),
     subtitle = !!data.acf.document_subtitle,
     imageSrc = data.images !== null ? data.images.medium : '/wp-content/themes/ratgeber/images/doc-thumbnail.png';
 

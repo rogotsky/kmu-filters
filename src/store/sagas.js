@@ -21,7 +21,10 @@ import {
   createEndpoint,
   getPosts
 } from "../helpers";
-import { BASE_URL } from "../constants";
+import {
+  BASE_URL,
+  SEARCH_URL
+} from "../constants";
 
 function* getInitialData() {
   try {
@@ -65,7 +68,7 @@ function* changePage() {
 function* search() {
   try {
     const searchValue = yield select(selectors.searchValue);
-    const endpoint = BASE_URL + 'search=' + searchValue + '&';
+    const endpoint = SEARCH_URL + searchValue + '&';
     yield put(updateLoading(true));
     const data = yield call(getPosts, endpoint);
     yield put(updatePosts(data.items));

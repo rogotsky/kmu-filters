@@ -32,8 +32,7 @@ class FilterRow extends Component {
   }
 
   render() {
-    const parent = this.props.data.parent,
-          isRating = parent === 'd_rating';
+    const isRating = this.props.data.parent === 'd_rating';
 
     return (
       <li className="service-filter__item">
@@ -41,7 +40,7 @@ class FilterRow extends Component {
           { isRating ?
             <input
               type="radio"
-              name={parent}
+              name={this.props.data.parent}
               checked={this.isChecked()}
               onChange={this.handleChange}
               onClick={this.handleClick}
