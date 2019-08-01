@@ -9,8 +9,9 @@ class FilterRow extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleRadioClick = this.handleRadioClick.bind(this);
     this.isChecked = this.isChecked.bind(this);
+    this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
   }
 
   isChecked() {
@@ -24,10 +25,22 @@ class FilterRow extends Component {
     this.props.updateFilters(createFiltersObject(this.props, this.isChecked()));
   }
 
-  handleClick(e) {
+  handleRadioClick(e) {
+    if (this.props.loading) {
+      e.preventDefault();
+      return false;
+    }
+
     if (this.isChecked()) {
       e.target.checked = false;
       this.handleChange();
+    }
+  }
+
+  handleCheckboxClick(e) {
+    if (this.props.loading) {
+      e.preventDefault();
+      return false;
     }
   }
 
@@ -43,12 +56,13 @@ class FilterRow extends Component {
               name={this.props.data.parent}
               checked={this.isChecked()}
               onChange={this.handleChange}
-              onClick={this.handleClick}
+              onClick={this.handleRadioClick}
             /> :
             <input
               type="checkbox"
               checked={this.isChecked()}
               onChange={this.handleChange}
+              onClick={this.handleCheckboxClick}
             />
           }
           <span className="filter-checkbox"/>
@@ -61,7 +75,7 @@ class FilterRow extends Component {
   }
 }
 
-const mapStateToProps = ({ filters }) => ({ filters });
+const mapStateToProps = ({ filters, loading }) => ({ filters, loading });
 
 const mapDispatchToProps = {
   updateFilters
@@ -70,7 +84,8 @@ const mapDispatchToProps = {
 FilterRow.propTypes = {
   filters: PropTypes.object,
   updateFilters: PropTypes.func,
-  data: PropTypes.object
+  data: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterRow);

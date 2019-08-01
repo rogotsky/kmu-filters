@@ -43,7 +43,7 @@ export const createEndpoint = (base, filters) => {
   const query = (filters) => (
     Object.keys(filters).reduce((acc, i,) => {
       if (i === 'd_rating') {
-        acc+= `filter[meta_key]=rmp_rounded_rating&filter[meta_value]=${filters[i].items[0]}&`;
+        acc += `filter[meta_key]=rmp_rounded_rating&filter[meta_value]=${filters[i].items[0]}&`;
       } else {
         acc += `filter[${i}]=${filters[i].items.join(filters[i].relation === 'AND' ? '%2B' : ',')}&`;
       }
@@ -66,6 +66,11 @@ export const getPosts = async (url, page) => {
     const totalPages = await parseInt(response.headers.get('X-WP-TotalPages'));
     const totalPosts = await parseInt(response.headers.get('X-WP-Total'));
     const items = await response.json();
+
+    window.scrollTo({
+      top: (document.getElementById('page').getBoundingClientRect().top + window.scrollY),
+      left: 0
+    });
 
     return {
       totalPages,

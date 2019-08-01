@@ -18,8 +18,10 @@ class Search extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    if (!!this.state.searchValue) {
+    if (!!this.state.searchValue && !this.props.loading) {
       this.props.searchPosts(this.state.searchValue);
+    } else {
+      return false;
     }
   };
 
@@ -28,7 +30,7 @@ class Search extends Component {
       searchValue: e.target.value
     });
 
-    if (e.target.value.length === 0) {
+    if (e.target.value.length === 0 && !this.props.loading) {
       this.props.searchPosts('');
     }
   }
@@ -67,7 +69,7 @@ class Search extends Component {
   }
 }
 
-const mapStateToProps = ({ totalPosts }) => ({ totalPosts });
+const mapStateToProps = ({ totalPosts, loading }) => ({ totalPosts, loading });
 
 const mapDispatchToProps = {
   searchPosts
@@ -75,7 +77,8 @@ const mapDispatchToProps = {
 
 Search.propTypes = {
   totalPosts: PropTypes.number,
-  searchPosts: PropTypes.func
+  searchPosts: PropTypes.func,
+  loading: PropTypes.bool
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
