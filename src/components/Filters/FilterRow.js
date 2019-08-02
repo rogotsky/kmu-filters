@@ -66,9 +66,12 @@ class FilterRow extends Component {
             />
           }
           <span className="filter-checkbox"/>
-          <span className="filter-name">
-            { isRating ? <Stars count={this.props.data.slug} /> : this.props.data.name }
-          </span>
+          { isRating ?
+            <span className="filter-name">
+              <Stars count={this.props.data.slug} />
+            </span> :
+            <span className="filter-name" dangerouslySetInnerHTML={{__html: this.props.data.name}} />
+          }
         </label>
       </li>
     )

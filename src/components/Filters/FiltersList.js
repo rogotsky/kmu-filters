@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Filter from './Filter';
-import FiltersData from './FiltersData';
+import { FILTERS_DATA_URL } from "../../constants";
 
 class FiltersList extends Component {
   constructor(props) {
@@ -8,9 +8,27 @@ class FiltersList extends Component {
     this.toggleFilters = this.toggleFilters.bind(this);
 
     this.state = {
-      filtersOpened: false
+      filtersOpened: false,
+      filtersData: []
     }
   }
+
+  componentDidMount() {
+    this.setFiltersData(FILTERS_DATA_URL);
+  }
+
+  async setFiltersData(url) {
+    try {
+      const response = await fetch(url);
+      const items = await response.json();
+
+      this.setState({
+        filtersData: items
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   createFilters(data) {
     return data.map(filterData => {
@@ -26,7 +44,8 @@ class FiltersList extends Component {
 
   render() {
     const buttonToggledClass = this.state.filtersOpened ? ' service-filters__toggle--opened' : '',
-      filtersToggledClass = this.state.filtersOpened ? ' service-filters__inner--opened' : '';
+      filtersToggledClass = this.state.filtersOpened ? ' service-filters__inner--opened' : '',
+      filtersData = this.state.filtersData;
 
     return (
       <div className="service-filters">
@@ -39,7 +58,7 @@ class FiltersList extends Component {
         <div
           className={`service-filters__inner${filtersToggledClass}`}
         >
-          {this.createFilters(FiltersData)}
+          {!!filtersData.length && this.createFilters(filtersData)}
         </div>
       </div>
     )
