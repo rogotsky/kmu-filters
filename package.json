@@ -16,8 +16,11 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
+    "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
-    "webpack": "^4.32.2",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {

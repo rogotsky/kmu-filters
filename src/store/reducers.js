@@ -5,7 +5,9 @@ import {
 	UPDATE_LOADING,
 	SET_POST_DATA,
 	CHANGE_PAGE,
-	SEARCH_POSTS
+	SEARCH_POSTS,
+	OPEN_MODAL,
+	CLOSE_MODAL,
 } from "./actionTypes";
 
 /**
@@ -21,7 +23,9 @@ const initialState = {
 	currentQuery: '',
 	searchValue: '',
 	currentPage: 1,
-	posts: []
+	posts: [],
+  modalSource: '',
+  modalOpened: false,
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -56,6 +60,21 @@ export const rootReducer = (state = initialState, action) => {
 				searchValue: action.payload,
 				filters: {}
 			};
+
+		case OPEN_MODAL:
+			return {
+				...state,
+				modalSource: action.payload,
+				modalOpened: true,
+			};
+
+		case CLOSE_MODAL: {
+			return {
+				...state,
+				modalOpened: false,
+        modalSource: '',
+			};
+		}
 
 		default:
 			return state;

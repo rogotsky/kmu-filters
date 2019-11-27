@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { updateFilters } from "../../store/actions";
 import { createFiltersObject } from "../../helpers";
 import PropTypes from 'prop-types';

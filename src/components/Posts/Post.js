@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Rating from '../Rating';
+import ZoomButton from '../ZoomButton';
 
 const Post = ({ data }) => {
   const formattedDate = (wpDate, divider) => {
@@ -18,24 +19,26 @@ const Post = ({ data }) => {
     postLink = data.acf.document_file ? data.acf.document_file : '#',
     date = formattedDate(data.modified_gmt, '.'),
     subtitle = !!data.acf.document_subtitle,
-    imageSrc = data.images !== null ? data.images.medium : '/wp-content/themes/ratgeber/images/doc-thumbnail.png';
+    imageSrc = data.images !== null ? data.images.medium : '/wp-content/themes/ratgeber/images/doc-thumbnail.png',
+    largeImageSrc = data.images !== null ? data.images.large : '/wp-content/themes/ratgeber/images/doc-thumbnail.png';
 
   return (
     <div className="service-item">
       <div className="service-item__thumbnail">
         <img src={imageSrc}/>
+        {!!data.images && <ZoomButton source={largeImageSrc}/>}
       </div>
       <div className="service-item__textbox">
-        <p>{data.title.rendered} <br/>by {data.coauthors[0].display_name}</p>
-        {subtitle && <p>- {data.acf.document_subtitle}</p>}
-        {tagsExist && <p>Tags: {tagsString}</p>}
+        <p className="service-item__title">{data.title.rendered} <br/><span>by {data.coauthors[0].display_name}</span></p>
+        {subtitle && <p className="service-item__subtitle">- {data.acf.document_subtitle}</p>}
+        {tagsExist && <p className="service-item__tags"><span>Tags:</span> {tagsString}</p>}
         <Rating
             rating={parseInt(data.rating)}
             postId={data.id}
         />
       </div>
       <div className="service-item__meta">
-        <p>Letzes Update: <br/><span>{date}</span></p>
+        <p className="service-item__date">Letzes Update: <br/><span>{date}</span></p>
         <a target="_blank" href={postLink} className="service-item__download">Download</a>
       </div>
     </div>

@@ -2,6 +2,8 @@ import React from 'react';
 import Search from './components/Search.js';
 import FiltersList from './components/Filters/FiltersList';
 import PostsList from './components/Posts/PostsList';
+import ZoomModal from './components/ZoomModal';
+import './style.scss';
 
 const App = () => {
   return (
@@ -11,6 +13,7 @@ const App = () => {
         <FiltersList/>
         <PostsList/>
       </div>
+      <ZoomModal/>
     </div>
   )
 };

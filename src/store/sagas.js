@@ -4,26 +4,26 @@ import {
   call,
   takeLatest,
   select,
-  all
+  all,
 } from 'redux-saga/effects';
 import {
   UPDATE_FILTERS,
   SET_INITIAL_POSTS,
   CHANGE_PAGE,
-  SEARCH_POSTS
+  SEARCH_POSTS,
 } from "./actionTypes";
 import {
   updatePosts,
   updateLoading,
-  setPostData
+  setPostData,
 } from "./actions";
 import {
   createEndpoint,
-  getPosts
+  getPosts,
 } from "../helpers";
 import {
   BASE_URL,
-  SEARCH_URL
+  SEARCH_URL,
 } from "../constants";
 
 function* getInitialData() {
@@ -84,7 +84,7 @@ function* rootSaga() {
     takeLatest(SET_INITIAL_POSTS, getInitialData),
     takeLatest(UPDATE_FILTERS, getFilteredData),
     takeLatest(CHANGE_PAGE, changePage),
-    takeLatest(SEARCH_POSTS, search)
+    takeLatest(SEARCH_POSTS, search),
   ]);
 }
 
